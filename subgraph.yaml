@@ -1,0 +1,26 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: LlamaSubsFactory
+    network: goerli
+    source:
+      address: "0xE15e9120Ed73C222c55e54560F8b4228d611f74f"
+      abi: LlamaSubsFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - DeployFlatRateERC20
+        - DeployFlatRateERC20NonRefundable
+      abis:
+        - name: LlamaSubsFactory
+          file: ./abis/LlamaSubsFactory.json
+      eventHandlers:
+        - event: DeployFlatRateERC20(address,indexed address,uint256,uint256)
+          handler: handleDeployFlatRateERC20
+        - event: DeployFlatRateERC20NonRefundable(address,indexed address)
+          handler: handleDeployFlatRateERC20NonRefundable
+      file: ./src/llama-subs-factory.ts

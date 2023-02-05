@@ -1,0 +1,19 @@
+type DeployFlatRateERC20 @entity(immutable: true) {
+  id: Bytes!
+  deployedContract: Bytes! # address
+  owner: Bytes! # address
+  currentPeriod: BigInt! # uint256
+  periodDuration: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DeployFlatRateERC20NonRefundable @entity(immutable: true) {
+  id: Bytes!
+  deployedContract: Bytes! # address
+  owner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
