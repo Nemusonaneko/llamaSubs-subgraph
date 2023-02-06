@@ -1,19 +1,73 @@
-type DeployFlatRateERC20 @entity(immutable: true) {
-  id: Bytes!
-  deployedContract: Bytes! # address
-  owner: Bytes! # address
-  currentPeriod: BigInt! # uint256
-  periodDuration: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type Refundable @entity {
+  id: ID!
+  owner: Owner!
+  address: Bytes!
+  periodDuation: BigInt!
+  whitelist: [Bytes!]!
+  tiers: [Tier!]! @derivedFrom(field: "refundableContract")
 }
 
-type DeployFlatRateERC20NonRefundable @entity(immutable: true) {
-  id: Bytes!
-  deployedContract: Bytes! # address
-  owner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type NonRefundable @entity {
+  id: ID!
+  owner: Owner!
+  address: Bytes!
+  whitelist: [Bytes!]!
+  subs: [Sub!]! @derivedFrom(field: "nonRefundableContract")
+}
+
+type Token @entity {
+  id: ID!
+  address: Bytes!
+  symbol: String!
+  name: String!
+  decimals: Int!
+}
+
+type Tier @entity {
+  id: ID!
+  refundableContract: Refundable!
+  costPerPeriod: BigInt!
+  amountOfSubs: BigInt!
+  disabledAt: BigInt!
+  token: Token!
+  refundableSubs: [RefundableSub!]! @derivedFrom(field: "tier")
+}
+
+type Sub @entity {
+  id: ID!
+  nonRefundableContract: NonRefundable!
+  costOfSub: BigInt!
+  duration: BigInt!
+  disabled: Boolean!
+  token: Token!
+}
+
+type Owner @entity {
+  id: ID!
+  address: Bytes!
+  refundables: [Refundable!]! @derivedFrom(field: "owner")
+  nonrefundables: [NonRefundable!]! @derivedFrom(field: "owner")
+}
+
+type Subber @entity {
+  id: ID!
+  address: Bytes!
+  nonRefundableSubs: [NonRefundableSub!]! @derivedFrom(field: "subber")
+  refundableSubs: [RefundableSub!]! @derivedFrom(field: "subber")
+}
+
+type NonRefundableSub @entity {
+  id: ID!
+  nonRefundableContract: NonRefundable!
+  subber: Subber!
+  expires: BigInt!
+  sub: Sub!
+}
+
+type RefundableSub @entity {
+  id: ID!
+  refundableContract: Refundable!
+  subber: Subber!
+  expires: BigInt!
+  tier: Tier!
 }
