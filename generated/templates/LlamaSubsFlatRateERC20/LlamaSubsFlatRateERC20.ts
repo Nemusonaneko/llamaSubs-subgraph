@@ -27,8 +27,12 @@ export class AddTier__Params {
     return this._event.parameters[0].value.toBigInt();
   }
 
+  get token(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
   get costPerPeriod(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -170,6 +174,10 @@ export class RemoveTier__Params {
   get tierNumber(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
+
+  get disabledAt(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
 }
 
 export class RemoveWhitelist extends ethereum.Event {
@@ -203,24 +211,28 @@ export class Subscribe__Params {
     this._event = event;
   }
 
+  get id(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
   get subscriber(): Address {
-    return this._event.parameters[0].value.toAddress();
+    return this._event.parameters[1].value.toAddress();
   }
 
   get tier(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
-  }
-
-  get durations(): BigInt {
     return this._event.parameters[2].value.toBigInt();
   }
 
-  get expires(): BigInt {
+  get durations(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
 
-  get sent(): BigInt {
+  get expires(): BigInt {
     return this._event.parameters[4].value.toBigInt();
+  }
+
+  get sent(): BigInt {
+    return this._event.parameters[5].value.toBigInt();
   }
 }
 
@@ -331,8 +343,16 @@ export class Unsubscribe__Params {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get refund(): BigInt {
+  get tier(): BigInt {
     return this._event.parameters[1].value.toBigInt();
+  }
+
+  get expires(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
+  get refund(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
   }
 }
 

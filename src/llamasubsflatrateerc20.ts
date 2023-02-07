@@ -9,7 +9,7 @@ import {
 } from "../generated/templates/LlamaSubsFlatRateERC20/LlamaSubsFlatRateERC20";
 import { Refundable, RefundableSub, Tier } from "../generated/schema";
 import { loadSubber, loadToken } from "./utils";
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 
 export function handleSubscribe(event: Subscribe): void {
   let tier = Tier.load(
@@ -47,7 +47,7 @@ export function handleUnsubscribe(event: Unsubscribe): void {
     `${event.address.toHexString()}-${event.params.id.toHexString()}
         }`
   )!;
-  refundableSub.expires = new BigInt(0);
+  refundableSub.expires = event.params.expires;
   refundableSub.save();
 
   tier.amountOfSubs = tier.amountOfSubs.minus(new BigInt(1));
@@ -59,7 +59,7 @@ export function handleAddTier(event: AddTier): void {
   let tier = new Tier(
     `${event.address.toHexString()}-${event.params.tierNumber.toHexString()}`
   );
-  const token = loadToken(event.params.token.toHexString());
+  const token = loadToken(event.params.token);
   tier.refundableContract = refundableContract.id;
   tier.costPerPeriod = event.params.costPerPeriod;
   tier.amountOfSubs = new BigInt(0);
@@ -86,10 +86,16 @@ export function handleAddWhitelist(event: AddWhitelist): void {
 
 export function handleRemoveWhitelist(event: RemoveWhitelist): void {
   let refundableContract = Refundable.load(event.address.toHexString())!;
-  const newWhitelist = refundableContract.whitelist;
-  newWhitelist.filter((item) => {
-    return item !== event.params.toRemove;
-  });
+  const oldWhitelist: Bytes[] = refundableContract.whitelist;
+  const newWhitelist: Bytes[] = [];
+  let j = 0;
+  for (let i = 0; i < oldWhitelist.length; i++) {
+    if (oldWhitelist[i].toHexString() === event.params.toRemove.toHexString())
+      continue;
+    newWhitelist[j] = oldWhitelist[i];
+    j++;
+  }
+
   refundableContract.whitelist = newWhitelist;
   refundableContract.save();
 }

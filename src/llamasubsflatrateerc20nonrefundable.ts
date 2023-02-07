@@ -8,6 +8,7 @@ import {
 } from "../generated/templates/LlamaSubsFlatRateERC20NonRefundable/LlamaSubsFlatRateERC20NonRefundable";
 import { NonRefundable, NonRefundableSub, Sub } from "../generated/schema";
 import { loadSubber, loadToken } from "./utils";
+import { Bytes } from "@graphprotocol/graph-ts";
 
 export function handleSubscribe(event: Subscribe): void {
   const sub = Sub.load(
@@ -68,11 +69,17 @@ export function handleAddWhitelist(event: AddWhitelist): void {
 }
 
 export function handleRemoveWhitelist(event: RemoveWhitelist): void {
-  let refundableContract = NonRefundable.load(event.address.toHexString())!;
-  const newWhitelist = refundableContract.whitelist;
-  newWhitelist.filter((item) => {
-    return item !== event.params.toRemove;
-  });
-  refundableContract.whitelist = newWhitelist;
-  refundableContract.save();
-}
+    let refundableContract = NonRefundable.load(event.address.toHexString())!;
+    const oldWhitelist: Bytes[] = refundableContract.whitelist;
+    const newWhitelist: Bytes[] = [];
+    let j = 0;
+    for (let i = 0; i < oldWhitelist.length; i++) {
+      if (oldWhitelist[i].toHexString() === event.params.toRemove.toHexString())
+        continue;
+      newWhitelist[j] = oldWhitelist[i];
+      j++;
+    }
+  
+    refundableContract.whitelist = newWhitelist;
+    refundableContract.save();
+  }

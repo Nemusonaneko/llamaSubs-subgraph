@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: LlamaSubsFactory
@@ -17,20 +17,19 @@ dataSources:
         - DeployFlatRateERC20NonRefundable
       abis:
         - name: LlamaSubsFactory
-          file: ./abis/LlamaSubsFactory.json
+          file: LlamaSubsFactory/abis/LlamaSubsFactory.json
         - name: LlamaSubsFlatRateERC20
-          file: ./abis/LlamaSubsFlatRateERC20NonRefundable.json
+          file: LlamaSubsFactory/abis/LlamaSubsFlatRateERC20NonRefundable.json
         - name: LlamaSubsFlatRateERC20NonRefundable
-          file: ./abis/LlamaSubsFlatRateERC20NonRefundable.json
+          file: LlamaSubsFactory/abis/LlamaSubsFlatRateERC20NonRefundable.json
         - name: ERC20
-          file: ./abis/ERC20.json
+          file: LlamaSubsFactory/abis/ERC20.json
       eventHandlers:
         - event: DeployFlatRateERC20(address,indexed address,uint256,uint256)
           handler: handleDeployFlatRateERC20
         - event: DeployFlatRateERC20NonRefundable(address,indexed address)
           handler: handleDeployFlatRateERC20NonRefundable
-      file: ./src/llama-subs-factory.ts
-
+      file: LlamaSubsFactory/LlamaSubsFactory.wasm
 templates:
   - kind: ethereum
     name: LlamaSubsFlatRateERC20
@@ -52,11 +51,11 @@ templates:
         - RemoveWhitelist
       abis:
         - name: LlamaSubsFactory
-          file: ./abis/LlamaSubsFactory.json
+          file: LlamaSubsFlatRateERC20/abis/LlamaSubsFactory.json
         - name: LlamaSubsFlatRateERC20
-          file: ./abis/LlamaSubsFlatRateERC20.json
+          file: LlamaSubsFlatRateERC20/abis/LlamaSubsFlatRateERC20.json
         - name: ERC20
-          file: ./abis/ERC20.json
+          file: LlamaSubsFlatRateERC20/abis/ERC20.json
       eventHandlers:
         - event: Subscribe(uint256,address,uint256,uint256,uint256,uint256)
           handler: handleSubscribe
@@ -74,7 +73,7 @@ templates:
           handler: handleAddWhitelist
         - event: RemoveWhitelist(address)
           handler: handleRemoveWhitelist
-      file: ./src/llamasubsflatrateerc20.ts
+      file: templates/LlamaSubsFlatRateERC20/LlamaSubsFlatRateERC20.wasm
   - kind: ethereum
     name: LlamaSubsFlatRateERC20NonRefundable
     network: goerli
@@ -94,11 +93,11 @@ templates:
         - RemoveWhitelist
       abis:
         - name: LlamaSubsFactory
-          file: ./abis/LlamaSubsFactory.json
+          file: LlamaSubsFlatRateERC20NonRefundable/abis/LlamaSubsFactory.json
         - name: LlamaSubsFlatRateERC20NonRefundable
-          file: ./abis/LlamaSubsFlatRateERC20NonRefundable.json
+          file: LlamaSubsFlatRateERC20NonRefundable/abis/LlamaSubsFlatRateERC20NonRefundable.json
         - name: ERC20
-          file: ./abis/ERC20.json
+          file: LlamaSubsFlatRateERC20NonRefundable/abis/ERC20.json
       eventHandlers:
         - event: Subscribe(uint256,address,uint56,address,uint40,uint208)
           handler: handleSubscribe
@@ -114,4 +113,4 @@ templates:
           handler: handleAddWhitelist
         - event: RemoveWhitelist(address)
           handler: handleRemoveWhitelist
-      file: ./src/llamasubsflatrateerc20nonrefundable.ts
+      file: templates/LlamaSubsFlatRateERC20NonRefundable/LlamaSubsFlatRateERC20NonRefundable.wasm
