@@ -6,8 +6,9 @@ dataSources:
     name: LlamaSubsFactory
     network: goerli
     source:
-      address: "0x7bA6daE60050C3ff697fC6f8AAFA5d89CB623C4F"
+      address: "0xE15e9120Ed73C222c55e54560F8b4228d611f74f"
       abi: LlamaSubsFactory
+      startBlock: 8437562
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
