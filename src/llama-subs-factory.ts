@@ -30,20 +30,19 @@ export function handleDeployFlatRateERC20(event: DeployFlatRateERC20): void {
   refundable.periodDuation = event.params.periodDuration;
   refundable.whitelist = [];
 
-  const tiers = event.params.tiers;
-
-  for (let i = 0; i < tiers.length; i++) {
-    const token = loadToken(tiers[i].token);
-    let tier = new Tier(
-      `${event.params.deployedContract.toHexString()}-${i.toString()}`
-    );
-    tier.refundableContract = refundable.id;
-    tier.costPerPeriod = tiers[i].costPerPeriod;
-    tier.amountOfSubs = new BigInt(0);
-    tier.disabledAt = new BigInt(0);
-    tier.token = token.id;
-    tier.save();
-  }
+  // const tiers = event.params.tiers;
+  // for (let i = 0; i < tiers.length; i++) {
+  //   const token = loadToken(tiers[i].token);
+  //   let tier = new Tier(
+  //     `${event.params.deployedContract.toHexString()}-${i.toString()}`
+  //   );
+  //   tier.refundableContract = refundable.id;
+  //   tier.costPerPeriod = tiers[i].costPerPeriod;
+  //   tier.amountOfSubs = new BigInt(0);
+  //   tier.disabledAt = new BigInt(0);
+  //   tier.token = token.id;
+  //   tier.save();
+  // }
 
   refundable.save();
 }
@@ -65,18 +64,18 @@ export function handleDeployFlatRateERC20NonRefundable(
   nonrefundable.address = event.params.deployedContract;
   nonrefundable.whitelist = [];
 
-  const subs = event.params.subs;
-  for (let i = 0; i < subs.length; i++) {
-    const token = loadToken(subs[i].token);
-    let sub = new Sub(
-      `${event.params.deployedContract.toHexString()}-${i.toString()}`
-    );
-    sub.nonRefundableContract = nonrefundable.id;
-    sub.costOfSub = subs[i].costOfSub;
-    sub.duration = subs[i].duration;
-    sub.disabled = false;
-    sub.token = token.id;
-    sub.save();
-  }
+  // const subs = event.params.subs;
+  // for (let i = 0; i < subs.length; i++) {
+  //   const token = loadToken(subs[i].token);
+  //   let sub = new Sub(
+  //     `${event.params.deployedContract.toHexString()}-${i.toString()}`
+  //   );
+  //   sub.nonRefundableContract = nonrefundable.id;
+  //   sub.costOfSub = subs[i].costOfSub;
+  //   sub.duration = subs[i].duration;
+  //   sub.disabled = false;
+  //   sub.token = token.id;
+  //   sub.save();
+  // }
   nonrefundable.save();
 }
