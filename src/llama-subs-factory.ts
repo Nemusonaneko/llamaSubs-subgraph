@@ -1,14 +1,23 @@
+import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
   DeployFlatRateERC20,
   DeployFlatRateERC20NonRefundable,
 } from "../generated/LlamaSubsFactory/LlamaSubsFactory";
-import { NonRefundable, Owner, Refundable } from "../generated/schema";
+import {
+  NonRefundable,
+  Owner,
+  Refundable,
+  Sub,
+  Tier,
+} from "../generated/schema";
 import {
   LlamaSubsFlatRateERC20,
   LlamaSubsFlatRateERC20NonRefundable,
 } from "../generated/templates";
+import { loadToken } from "./utils";
 
 export function handleDeployFlatRateERC20(event: DeployFlatRateERC20): void {
+  LlamaSubsFlatRateERC20.create(event.params.deployedContract);
   let owner = Owner.load(event.params.owner.toHexString());
   if (!owner) {
     owner = new Owner(event.params.owner.toHexString());
@@ -20,13 +29,29 @@ export function handleDeployFlatRateERC20(event: DeployFlatRateERC20): void {
   refundable.address = event.params.deployedContract;
   refundable.periodDuation = event.params.periodDuration;
   refundable.whitelist = [];
+
+  const tiers = event.params.tiers;
+
+  for (let i = 0; i < tiers.length; i++) {
+    const token = loadToken(tiers[i].token);
+    let tier = new Tier(
+      `${event.params.deployedContract.toHexString()}-${i.toString()}`
+    );
+    tier.refundableContract = refundable.id;
+    tier.costPerPeriod = tiers[i].costPerPeriod;
+    tier.amountOfSubs = new BigInt(0);
+    tier.disabledAt = new BigInt(0);
+    tier.token = token.id;
+    tier.save();
+  }
+
   refundable.save();
-  LlamaSubsFlatRateERC20.create(event.params.deployedContract);
 }
 
 export function handleDeployFlatRateERC20NonRefundable(
   event: DeployFlatRateERC20NonRefundable
 ): void {
+  LlamaSubsFlatRateERC20NonRefundable.create(event.params.deployedContract);
   let owner = Owner.load(event.params.owner.toHexString());
   if (!owner) {
     owner = new Owner(event.params.owner.toHexString());
@@ -39,6 +64,19 @@ export function handleDeployFlatRateERC20NonRefundable(
   nonrefundable.owner = owner.id;
   nonrefundable.address = event.params.deployedContract;
   nonrefundable.whitelist = [];
+
+  const subs = event.params.subs;
+  for (let i = 0; i < subs.length; i++) {
+    const token = loadToken(subs[i].token);
+    let sub = new Sub(
+      `${event.params.deployedContract.toHexString()}-${i.toString()}`
+    );
+    sub.nonRefundableContract = nonrefundable.id;
+    sub.costOfSub = subs[i].costOfSub;
+    sub.duration = subs[i].duration;
+    sub.disabled = false;
+    sub.token = token.id;
+    sub.save();
+  }
   nonrefundable.save();
-  LlamaSubsFlatRateERC20NonRefundable.create(event.params.deployedContract);
 }

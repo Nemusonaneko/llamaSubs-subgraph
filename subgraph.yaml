@@ -6,9 +6,9 @@ dataSources:
     name: LlamaSubsFactory
     network: goerli
     source:
-      address: "0xE15e9120Ed73C222c55e54560F8b4228d611f74f"
+      address: "0x1d413d108B67aAa1DB9300FfF94AccDAaa562428"
       abi: LlamaSubsFactory
-      startBlock: 8437562
+      startBlock: 8549627
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -26,9 +26,9 @@ dataSources:
         - name: ERC20
           file: ./abis/ERC20.json
       eventHandlers:
-        - event: DeployFlatRateERC20(address,indexed address,uint256,uint256)
+        - event: DeployFlatRateERC20(address,indexed address,uint256,uint256,(uint224,address)[])
           handler: handleDeployFlatRateERC20
-        - event: DeployFlatRateERC20NonRefundable(address,indexed address)
+        - event: DeployFlatRateERC20NonRefundable(address,indexed address,(uint208,uint40,address)[])
           handler: handleDeployFlatRateERC20NonRefundable
       file: ./src/llama-subs-factory.ts
 

@@ -38,6 +38,22 @@ export class DeployFlatRateERC20__Params {
   get periodDuration(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
+
+  get tiers(): Array<DeployFlatRateERC20TiersStruct> {
+    return this._event.parameters[4].value.toTupleArray<
+      DeployFlatRateERC20TiersStruct
+    >();
+  }
+}
+
+export class DeployFlatRateERC20TiersStruct extends ethereum.Tuple {
+  get costPerPeriod(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get token(): Address {
+    return this[1].toAddress();
+  }
 }
 
 export class DeployFlatRateERC20NonRefundable extends ethereum.Event {
@@ -59,6 +75,26 @@ export class DeployFlatRateERC20NonRefundable__Params {
 
   get owner(): Address {
     return this._event.parameters[1].value.toAddress();
+  }
+
+  get subs(): Array<DeployFlatRateERC20NonRefundableSubsStruct> {
+    return this._event.parameters[2].value.toTupleArray<
+      DeployFlatRateERC20NonRefundableSubsStruct
+    >();
+  }
+}
+
+export class DeployFlatRateERC20NonRefundableSubsStruct extends ethereum.Tuple {
+  get costOfSub(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get duration(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get token(): Address {
+    return this[2].toAddress();
   }
 }
 
