@@ -78,6 +78,15 @@ export class Refundable extends Entity {
     this.set("whitelist", Value.fromBytesArray(value));
   }
 
+  get activeTiers(): Array<BigInt> {
+    let value = this.get("activeTiers");
+    return value!.toBigIntArray();
+  }
+
+  set activeTiers(value: Array<BigInt>) {
+    this.set("activeTiers", Value.fromBigIntArray(value));
+  }
+
   get tiers(): Array<string> {
     let value = this.get("tiers");
     return value!.toStringArray();
@@ -144,6 +153,15 @@ export class NonRefundable extends Entity {
 
   set whitelist(value: Array<Bytes>) {
     this.set("whitelist", Value.fromBytesArray(value));
+  }
+
+  get activeSubs(): Array<BigInt> {
+    let value = this.get("activeSubs");
+    return value!.toBigIntArray();
+  }
+
+  set activeSubs(value: Array<BigInt>) {
+    this.set("activeSubs", Value.fromBigIntArray(value));
   }
 
   get subs(): Array<string> {

@@ -1,4 +1,3 @@
-import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
   DeployFlatRateERC20,
   DeployFlatRateERC20NonRefundable,
@@ -7,14 +6,11 @@ import {
   NonRefundable,
   Owner,
   Refundable,
-  Sub,
-  Tier,
 } from "../generated/schema";
 import {
   LlamaSubsFlatRateERC20,
   LlamaSubsFlatRateERC20NonRefundable,
 } from "../generated/templates";
-import { loadToken } from "./utils";
 
 export function handleDeployFlatRateERC20(event: DeployFlatRateERC20): void {
   LlamaSubsFlatRateERC20.create(event.params.deployedContract);
@@ -29,6 +25,7 @@ export function handleDeployFlatRateERC20(event: DeployFlatRateERC20): void {
   refundable.address = event.params.deployedContract;
   refundable.periodDuation = event.params.periodDuration;
   refundable.whitelist = [];
+  refundable.activeTiers = [];
 
   // const tiers = event.params.tiers;
   // for (let i = 0; i < tiers.length; i++) {
@@ -63,6 +60,7 @@ export function handleDeployFlatRateERC20NonRefundable(
   nonrefundable.owner = owner.id;
   nonrefundable.address = event.params.deployedContract;
   nonrefundable.whitelist = [];
+  nonrefundable.activeSubs = [];
 
   // const subs = event.params.subs;
   // for (let i = 0; i < subs.length; i++) {

@@ -55,7 +55,7 @@ export function handleUnsubscribe(event: Unsubscribe): void {
 }
 
 export function handleAddTier(event: AddTier): void {
-  const refundableContract = Refundable.load(event.address.toHexString())!;
+  let refundableContract = Refundable.load(event.address.toHexString())!;
   let tier = new Tier(
     `${event.address.toHexString()}-${event.params.tierNumber.toHexString()}`
   );
@@ -65,15 +65,34 @@ export function handleAddTier(event: AddTier): void {
   tier.amountOfSubs = new BigInt(0);
   tier.disabledAt = new BigInt(0);
   tier.token = token.id;
+
+  let newActive = refundableContract.activeTiers;
+  newActive.push(event.params.tierNumber);
+  refundableContract.activeTiers = newActive;
+
   tier.save();
+  refundableContract.save();
 }
 
 export function handleRemoveTier(event: RemoveTier): void {
+  let refundableContract = Refundable.load(event.address.toHexString())!;
   let tier = Tier.load(
     `${event.address.toHexString()}-${event.params.tierNumber.toHexString()}`
   )!;
   tier.disabledAt = event.params.disabledAt;
+
+  let newActive = refundableContract.activeTiers;
+  let index = 0;
+  const last = newActive[newActive.length - 1];
+  while (newActive[index] !== event.params.tierNumber) {
+    index++;
+  }
+  newActive[index] = last;
+  newActive.pop();
+  refundableContract.activeTiers = newActive;
+
   tier.save();
+  refundableContract.save();
 }
 
 export function handleAddWhitelist(event: AddWhitelist): void {

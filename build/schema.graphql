@@ -4,6 +4,7 @@ type Refundable @entity {
   address: Bytes!
   periodDuation: BigInt!
   whitelist: [Bytes!]!
+  activeTiers: [BigInt!]!
   tiers: [Tier!]! @derivedFrom(field: "refundableContract")
 }
 
@@ -12,6 +13,7 @@ type NonRefundable @entity {
   owner: Owner!
   address: Bytes!
   whitelist: [Bytes!]!
+  activeSubs: [BigInt!]!
   subs: [Sub!]! @derivedFrom(field: "nonRefundableContract")
 }
 
