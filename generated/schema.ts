@@ -95,6 +95,15 @@ export class Refundable extends Entity {
   set tiers(value: Array<string>) {
     this.set("tiers", Value.fromStringArray(value));
   }
+
+  get history(): Array<string> {
+    let value = this.get("history");
+    return value!.toStringArray();
+  }
+
+  set history(value: Array<string>) {
+    this.set("history", Value.fromStringArray(value));
+  }
 }
 
 export class NonRefundable extends Entity {
@@ -171,6 +180,15 @@ export class NonRefundable extends Entity {
 
   set subs(value: Array<string>) {
     this.set("subs", Value.fromStringArray(value));
+  }
+
+  get history(): Array<string> {
+    let value = this.get("history");
+    return value!.toStringArray();
+  }
+
+  set history(value: Array<string>) {
+    this.set("history", Value.fromStringArray(value));
   }
 }
 
@@ -326,6 +344,15 @@ export class Tier extends Entity {
   set refundableSubs(value: Array<string>) {
     this.set("refundableSubs", Value.fromStringArray(value));
   }
+
+  get history(): Array<string> {
+    let value = this.get("history");
+    return value!.toStringArray();
+  }
+
+  set history(value: Array<string>) {
+    this.set("history", Value.fromStringArray(value));
+  }
 }
 
 export class Sub extends Entity {
@@ -403,6 +430,24 @@ export class Sub extends Entity {
   set token(value: string) {
     this.set("token", Value.fromString(value));
   }
+
+  get nonRefundableSubs(): Array<string> {
+    let value = this.get("nonRefundableSubs");
+    return value!.toStringArray();
+  }
+
+  set nonRefundableSubs(value: Array<string>) {
+    this.set("nonRefundableSubs", Value.fromStringArray(value));
+  }
+
+  get history(): Array<string> {
+    let value = this.get("history");
+    return value!.toStringArray();
+  }
+
+  set history(value: Array<string>) {
+    this.set("history", Value.fromStringArray(value));
+  }
 }
 
 export class Owner extends Entity {
@@ -462,6 +507,15 @@ export class Owner extends Entity {
   set nonrefundables(value: Array<string>) {
     this.set("nonrefundables", Value.fromStringArray(value));
   }
+
+  get history(): Array<string> {
+    let value = this.get("history");
+    return value!.toStringArray();
+  }
+
+  set history(value: Array<string>) {
+    this.set("history", Value.fromStringArray(value));
+  }
 }
 
 export class Subber extends Entity {
@@ -520,6 +574,15 @@ export class Subber extends Entity {
 
   set refundableSubs(value: Array<string>) {
     this.set("refundableSubs", Value.fromStringArray(value));
+  }
+
+  get history(): Array<string> {
+    let value = this.get("history");
+    return value!.toStringArray();
+  }
+
+  set history(value: Array<string>) {
+    this.set("history", Value.fromStringArray(value));
   }
 }
 
@@ -591,6 +654,15 @@ export class NonRefundableSub extends Entity {
   set sub(value: string) {
     this.set("sub", Value.fromString(value));
   }
+
+  get history(): Array<string> {
+    let value = this.get("history");
+    return value!.toStringArray();
+  }
+
+  set history(value: Array<string>) {
+    this.set("history", Value.fromStringArray(value));
+  }
 }
 
 export class RefundableSub extends Entity {
@@ -658,5 +730,269 @@ export class RefundableSub extends Entity {
 
   set tier(value: string) {
     this.set("tier", Value.fromString(value));
+  }
+
+  get history(): Array<string> {
+    let value = this.get("history");
+    return value!.toStringArray();
+  }
+
+  set history(value: Array<string>) {
+    this.set("history", Value.fromStringArray(value));
+  }
+}
+
+export class HistoryEvent extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save HistoryEvent entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type HistoryEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("HistoryEvent", id.toString(), this);
+    }
+  }
+
+  static load(id: string): HistoryEvent | null {
+    return changetype<HistoryEvent | null>(store.get("HistoryEvent", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get txHash(): Bytes {
+    let value = this.get("txHash");
+    return value!.toBytes();
+  }
+
+  set txHash(value: Bytes) {
+    this.set("txHash", Value.fromBytes(value));
+  }
+
+  get eventType(): string {
+    let value = this.get("eventType");
+    return value!.toString();
+  }
+
+  set eventType(value: string) {
+    this.set("eventType", Value.fromString(value));
+  }
+
+  get nonRefundableContract(): string | null {
+    let value = this.get("nonRefundableContract");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set nonRefundableContract(value: string | null) {
+    if (!value) {
+      this.unset("nonRefundableContract");
+    } else {
+      this.set("nonRefundableContract", Value.fromString(<string>value));
+    }
+  }
+
+  get refundableContract(): string | null {
+    let value = this.get("refundableContract");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set refundableContract(value: string | null) {
+    if (!value) {
+      this.unset("refundableContract");
+    } else {
+      this.set("refundableContract", Value.fromString(<string>value));
+    }
+  }
+
+  get nonRefundableSub(): string | null {
+    let value = this.get("nonRefundableSub");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set nonRefundableSub(value: string | null) {
+    if (!value) {
+      this.unset("nonRefundableSub");
+    } else {
+      this.set("nonRefundableSub", Value.fromString(<string>value));
+    }
+  }
+
+  get refundableSub(): string | null {
+    let value = this.get("refundableSub");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set refundableSub(value: string | null) {
+    if (!value) {
+      this.unset("refundableSub");
+    } else {
+      this.set("refundableSub", Value.fromString(<string>value));
+    }
+  }
+
+  get owner(): string | null {
+    let value = this.get("owner");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set owner(value: string | null) {
+    if (!value) {
+      this.unset("owner");
+    } else {
+      this.set("owner", Value.fromString(<string>value));
+    }
+  }
+
+  get subber(): string | null {
+    let value = this.get("subber");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set subber(value: string | null) {
+    if (!value) {
+      this.unset("subber");
+    } else {
+      this.set("subber", Value.fromString(<string>value));
+    }
+  }
+
+  get sub(): string | null {
+    let value = this.get("sub");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set sub(value: string | null) {
+    if (!value) {
+      this.unset("sub");
+    } else {
+      this.set("sub", Value.fromString(<string>value));
+    }
+  }
+
+  get tier(): string | null {
+    let value = this.get("tier");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set tier(value: string | null) {
+    if (!value) {
+      this.unset("tier");
+    } else {
+      this.set("tier", Value.fromString(<string>value));
+    }
+  }
+
+  get expires(): BigInt | null {
+    let value = this.get("expires");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set expires(value: BigInt | null) {
+    if (!value) {
+      this.unset("expires");
+    } else {
+      this.set("expires", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get disabledAt(): BigInt | null {
+    let value = this.get("disabledAt");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set disabledAt(value: BigInt | null) {
+    if (!value) {
+      this.unset("disabledAt");
+    } else {
+      this.set("disabledAt", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get whitelist(): Bytes | null {
+    let value = this.get("whitelist");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set whitelist(value: Bytes | null) {
+    if (!value) {
+      this.unset("whitelist");
+    } else {
+      this.set("whitelist", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get createdTimestamp(): BigInt {
+    let value = this.get("createdTimestamp");
+    return value!.toBigInt();
+  }
+
+  set createdTimestamp(value: BigInt) {
+    this.set("createdTimestamp", Value.fromBigInt(value));
+  }
+
+  get createdBlock(): BigInt {
+    let value = this.get("createdBlock");
+    return value!.toBigInt();
+  }
+
+  set createdBlock(value: BigInt) {
+    this.set("createdBlock", Value.fromBigInt(value));
   }
 }

@@ -1,5 +1,5 @@
 import { Bytes, Address } from "@graphprotocol/graph-ts";
-import { Subber, Token } from "../generated/schema";
+import { Owner, Subber, Token } from "../generated/schema";
 
 import { ERC20 } from "../generated/templates/LlamaSubsFlatRateERC20/ERC20";
 export function loadToken(token: Bytes): Token {
@@ -27,11 +27,21 @@ export function loadToken(token: Bytes): Token {
 }
 
 export function loadSubber(suber: Bytes): Subber {
-    let subber = Subber.load(suber.toHexString());
-    if (!subber) {
-        subber = new Subber(suber.toHexString());
-        subber.address = suber;
-        subber.save();
-    }
-    return subber;
+  let subber = Subber.load(suber.toHexString());
+  if (!subber) {
+    subber = new Subber(suber.toHexString());
+    subber.address = suber;
+    subber.save();
+  }
+  return subber;
+}
+
+export function loadOwner(ownr: Bytes): Owner {
+  let owner = Owner.load(ownr.toHexString());
+  if (!owner) {
+    owner = new Owner(ownr.toHexString());
+    owner.address = ownr;
+    owner.save();
+  }
+  return owner;
 }

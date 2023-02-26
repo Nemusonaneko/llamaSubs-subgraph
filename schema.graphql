@@ -6,6 +6,7 @@ type Refundable @entity {
   whitelist: [Bytes!]!
   activeTiers: [BigInt!]!
   tiers: [Tier!]! @derivedFrom(field: "refundableContract")
+  history: [HistoryEvent!]! @derivedFrom(field: "refundableContract")
 }
 
 type NonRefundable @entity {
@@ -15,6 +16,7 @@ type NonRefundable @entity {
   whitelist: [Bytes!]!
   activeSubs: [BigInt!]!
   subs: [Sub!]! @derivedFrom(field: "nonRefundableContract")
+  history: [HistoryEvent!]! @derivedFrom(field: "nonRefundableContract")
 }
 
 type Token @entity {
@@ -33,6 +35,7 @@ type Tier @entity {
   disabledAt: BigInt!
   token: Token!
   refundableSubs: [RefundableSub!]! @derivedFrom(field: "tier")
+  history: [HistoryEvent!]! @derivedFrom(field: "tier")
 }
 
 type Sub @entity {
@@ -42,6 +45,8 @@ type Sub @entity {
   duration: BigInt!
   disabled: Boolean!
   token: Token!
+  nonRefundableSubs: [NonRefundableSub!]! @derivedFrom(field: "sub")
+  history: [HistoryEvent!]! @derivedFrom(field: "sub")
 }
 
 type Owner @entity {
@@ -49,6 +54,7 @@ type Owner @entity {
   address: Bytes!
   refundables: [Refundable!]! @derivedFrom(field: "owner")
   nonrefundables: [NonRefundable!]! @derivedFrom(field: "owner")
+  history: [HistoryEvent!]! @derivedFrom(field: "owner")
 }
 
 type Subber @entity {
@@ -56,6 +62,7 @@ type Subber @entity {
   address: Bytes!
   nonRefundableSubs: [NonRefundableSub!]! @derivedFrom(field: "subber")
   refundableSubs: [RefundableSub!]! @derivedFrom(field: "subber")
+  history: [HistoryEvent!]! @derivedFrom(field: "subber")
 }
 
 type NonRefundableSub @entity {
@@ -64,6 +71,7 @@ type NonRefundableSub @entity {
   subber: Subber!
   expires: BigInt!
   sub: Sub!
+  history: [HistoryEvent!]! @derivedFrom(field: "nonRefundableSub")
 }
 
 type RefundableSub @entity {
@@ -72,4 +80,24 @@ type RefundableSub @entity {
   subber: Subber!
   expires: BigInt!
   tier: Tier!
+  history: [HistoryEvent!]! @derivedFrom(field: "refundableSub")
+}
+
+type HistoryEvent @entity {
+  id: ID!
+  txHash: Bytes!
+  eventType: String!
+  nonRefundableContract: NonRefundable
+  refundableContract: Refundable
+  nonRefundableSub: NonRefundableSub
+  refundableSub: RefundableSub
+  owner: Owner
+  subber: Subber
+  sub: Sub
+  tier: Tier
+  expires: BigInt
+  disabledAt: BigInt
+  whitelist: Bytes
+  createdTimestamp: BigInt!
+  createdBlock: BigInt!
 }
