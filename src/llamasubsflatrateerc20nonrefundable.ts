@@ -66,7 +66,7 @@ export function handleRemoveSub(event: RemoveSub): void {
   let newActive = nonrefundableContract.activeSubs;
   let index = 0;
   const last = newActive[newActive.length - 1];
-  while (newActive[index] !== event.params.subNumber) {
+  while (newActive[index].notEqual(event.params.subNumber)) {
     index++;
   }
   newActive[index] = last;

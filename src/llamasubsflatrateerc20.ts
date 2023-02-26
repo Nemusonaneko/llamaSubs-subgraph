@@ -160,7 +160,7 @@ export function handleRemoveTier(event: RemoveTier): void {
   let newActive = refundableContract.activeTiers;
   let index = 0;
   const last = newActive[newActive.length - 1];
-  while (newActive[index] !== event.params.tierNumber) {
+  while (newActive[index].notEqual(event.params.tierNumber)) {
     index++;
   }
   newActive[index] = last;
