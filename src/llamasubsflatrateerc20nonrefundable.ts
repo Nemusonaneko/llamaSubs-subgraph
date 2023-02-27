@@ -42,15 +42,12 @@ export function handleAddSub(event: AddSub): void {
   let sub = new Sub(
     `${event.address.toHexString()}-${event.params.subNumber.toHexString()}`
   );
+  sub.subId = event.params.subNumber;
   sub.nonRefundableContract = nonrefundableContract.id;
   sub.costOfSub = event.params.costOfSub;
   sub.duration = event.params.duration;
   sub.disabled = false;
   sub.token = token.id;
-
-  let newActive = nonrefundableContract.activeSubs;
-  newActive.push(event.params.subNumber);
-  nonrefundableContract.activeSubs = newActive;
 
   sub.save();
   nonrefundableContract.save();
@@ -62,16 +59,6 @@ export function handleRemoveSub(event: RemoveSub): void {
     `${event.address.toHexString()}-${event.params.subNumber.toHexString()}`
   )!;
   sub.disabled = true;
-
-  let newActive = nonrefundableContract.activeSubs;
-  let index = 0;
-  const last = newActive[newActive.length - 1];
-  while (newActive[index].notEqual(event.params.subNumber)) {
-    index++;
-  }
-  newActive[index] = last;
-  newActive.pop();
-  nonrefundableContract.activeSubs = newActive;
 
   sub.save();
   nonrefundableContract.save();
@@ -89,12 +76,13 @@ export function handleRemoveWhitelist(event: RemoveWhitelist): void {
   let refundableContract = NonRefundable.load(event.address.toHexString())!;
   const oldWhitelist: Bytes[] = refundableContract.whitelist;
   const newWhitelist: Bytes[] = [];
-  let j = 0;
   for (let i = 0; i < oldWhitelist.length; i++) {
-    if (oldWhitelist[i].toHexString() === event.params.toRemove.toHexString())
-      continue;
-    newWhitelist[j] = oldWhitelist[i];
-    j++;
+    if (
+      oldWhitelist[i].toHexString().toLowerCase() !==
+      event.params.toRemove.toHexString().toLowerCase()
+    ) {
+      newWhitelist.push(oldWhitelist[i]);
+    }
   }
 
   refundableContract.whitelist = newWhitelist;

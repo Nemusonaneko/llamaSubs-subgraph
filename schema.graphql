@@ -4,7 +4,6 @@ type Refundable @entity {
   address: Bytes!
   periodDuation: BigInt!
   whitelist: [Bytes!]!
-  activeTiers: [BigInt!]!
   tiers: [Tier!]! @derivedFrom(field: "refundableContract")
   history: [HistoryEvent!]! @derivedFrom(field: "refundableContract")
 }
@@ -14,7 +13,6 @@ type NonRefundable @entity {
   owner: Owner!
   address: Bytes!
   whitelist: [Bytes!]!
-  activeSubs: [BigInt!]!
   subs: [Sub!]! @derivedFrom(field: "nonRefundableContract")
   history: [HistoryEvent!]! @derivedFrom(field: "nonRefundableContract")
 }
@@ -29,6 +27,7 @@ type Token @entity {
 
 type Tier @entity {
   id: ID!
+  tierId: BigInt!
   refundableContract: Refundable!
   costPerPeriod: BigInt!
   amountOfSubs: BigInt!
@@ -40,6 +39,7 @@ type Tier @entity {
 
 type Sub @entity {
   id: ID!
+  subId: BigInt!
   nonRefundableContract: NonRefundable!
   costOfSub: BigInt!
   duration: BigInt!

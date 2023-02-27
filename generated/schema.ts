@@ -78,15 +78,6 @@ export class Refundable extends Entity {
     this.set("whitelist", Value.fromBytesArray(value));
   }
 
-  get activeTiers(): Array<BigInt> {
-    let value = this.get("activeTiers");
-    return value!.toBigIntArray();
-  }
-
-  set activeTiers(value: Array<BigInt>) {
-    this.set("activeTiers", Value.fromBigIntArray(value));
-  }
-
   get tiers(): Array<string> {
     let value = this.get("tiers");
     return value!.toStringArray();
@@ -162,15 +153,6 @@ export class NonRefundable extends Entity {
 
   set whitelist(value: Array<Bytes>) {
     this.set("whitelist", Value.fromBytesArray(value));
-  }
-
-  get activeSubs(): Array<BigInt> {
-    let value = this.get("activeSubs");
-    return value!.toBigIntArray();
-  }
-
-  set activeSubs(value: Array<BigInt>) {
-    this.set("activeSubs", Value.fromBigIntArray(value));
   }
 
   get subs(): Array<string> {
@@ -291,6 +273,15 @@ export class Tier extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get tierId(): BigInt {
+    let value = this.get("tierId");
+    return value!.toBigInt();
+  }
+
+  set tierId(value: BigInt) {
+    this.set("tierId", Value.fromBigInt(value));
+  }
+
   get refundableContract(): string {
     let value = this.get("refundableContract");
     return value!.toString();
@@ -384,6 +375,15 @@ export class Sub extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get subId(): BigInt {
+    let value = this.get("subId");
+    return value!.toBigInt();
+  }
+
+  set subId(value: BigInt) {
+    this.set("subId", Value.fromBigInt(value));
   }
 
   get nonRefundableContract(): string {

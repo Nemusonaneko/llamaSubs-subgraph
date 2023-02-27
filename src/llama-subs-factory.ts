@@ -22,7 +22,6 @@ export function handleDeployFlatRateERC20(event: DeployFlatRateERC20): void {
   refundable.address = event.params.deployedContract;
   refundable.periodDuation = event.params.periodDuration;
   refundable.whitelist = [];
-  refundable.activeTiers = [];
 
   refundable.save();
 
@@ -49,7 +48,6 @@ export function handleDeployFlatRateERC20NonRefundable(
   nonrefundable.owner = owner.id;
   nonrefundable.address = event.params.deployedContract;
   nonrefundable.whitelist = [];
-  nonrefundable.activeSubs = [];
 
   nonrefundable.save();
 

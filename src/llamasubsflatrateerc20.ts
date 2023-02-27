@@ -123,15 +123,13 @@ export function handleAddTier(event: AddTier): void {
   );
   const token = loadToken(event.params.token);
   const owner = Owner.load(refundableContract.owner)!;
+  tier.tierId = event.params.tierNumber;
   tier.refundableContract = refundableContract.id;
   tier.costPerPeriod = event.params.costPerPeriod;
   tier.amountOfSubs = new BigInt(0);
   tier.disabledAt = new BigInt(0);
   tier.token = token.id;
 
-  let newActive = refundableContract.activeTiers;
-  newActive.push(event.params.tierNumber);
-  refundableContract.activeTiers = newActive;
 
   tier.save();
   refundableContract.save();
@@ -156,16 +154,6 @@ export function handleRemoveTier(event: RemoveTier): void {
   )!;
   const owner = Owner.load(refundableContract.owner)!;
   tier.disabledAt = event.params.disabledAt;
-
-  let newActive = refundableContract.activeTiers;
-  let index = 0;
-  const last = newActive[newActive.length - 1];
-  while (newActive[index].notEqual(event.params.tierNumber)) {
-    index++;
-  }
-  newActive[index] = last;
-  newActive.pop();
-  refundableContract.activeTiers = newActive;
 
   tier.save();
   refundableContract.save();
@@ -210,12 +198,13 @@ export function handleRemoveWhitelist(event: RemoveWhitelist): void {
   const owner = Owner.load(refundableContract.owner)!;
   const oldWhitelist: Bytes[] = refundableContract.whitelist;
   const newWhitelist: Bytes[] = [];
-  let j = 0;
   for (let i = 0; i < oldWhitelist.length; i++) {
-    if (oldWhitelist[i].toHexString() === event.params.toRemove.toHexString())
-      continue;
-    newWhitelist[j] = oldWhitelist[i];
-    j++;
+    if (
+      oldWhitelist[i].toHexString().toLowerCase() !==
+      event.params.toRemove.toHexString().toLowerCase()
+    ) {
+      newWhitelist.push(oldWhitelist[i]);
+    }
   }
 
   refundableContract.whitelist = newWhitelist;
