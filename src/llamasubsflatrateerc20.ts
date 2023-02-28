@@ -28,6 +28,7 @@ export function handleSubscribe(event: Subscribe): void {
   let refundableSub = new RefundableSub(
     `${event.address.toHexString()}-${event.params.id.toHexString()}`
   );
+  refundableSub.tokenId = event.params.id;
   refundableSub.refundableContract = refundableContract.id;
   refundableSub.subber = subber.id;
   refundableSub.expires = event.params.expires;
@@ -64,6 +65,7 @@ export function handleExtend(event: Extend): void {
   const subber = Subber.load(refundableSub.subber)!;
   const refundableContract = Refundable.load(event.address.toHexString())!;
   const owner = Owner.load(refundableContract.owner)!;
+  refundableSub.tokenId = event.params.id;
   refundableSub.expires = event.params.expires;
   refundableSub.save();
 

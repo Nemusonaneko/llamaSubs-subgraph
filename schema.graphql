@@ -67,6 +67,7 @@ type Subber @entity {
 
 type NonRefundableSub @entity {
   id: ID!
+  tokenId: BigInt!
   nonRefundableContract: NonRefundable!
   subber: Subber!
   expires: BigInt!
@@ -76,6 +77,7 @@ type NonRefundableSub @entity {
 
 type RefundableSub @entity {
   id: ID!
+  tokenId: BigInt!
   refundableContract: Refundable!
   subber: Subber!
   expires: BigInt!

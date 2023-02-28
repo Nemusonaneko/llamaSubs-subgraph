@@ -619,6 +619,15 @@ export class NonRefundableSub extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get tokenId(): BigInt {
+    let value = this.get("tokenId");
+    return value!.toBigInt();
+  }
+
+  set tokenId(value: BigInt) {
+    this.set("tokenId", Value.fromBigInt(value));
+  }
+
   get nonRefundableContract(): string {
     let value = this.get("nonRefundableContract");
     return value!.toString();
@@ -694,6 +703,15 @@ export class RefundableSub extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get tokenId(): BigInt {
+    let value = this.get("tokenId");
+    return value!.toBigInt();
+  }
+
+  set tokenId(value: BigInt) {
+    this.set("tokenId", Value.fromBigInt(value));
   }
 
   get refundableContract(): string {
