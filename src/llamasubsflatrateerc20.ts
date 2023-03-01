@@ -56,8 +56,7 @@ export function handleSubscribe(event: Subscribe): void {
 
 export function handleExtend(event: Extend): void {
   let refundableSub = RefundableSub.load(
-    `${event.address.toHexString()}-${event.params.id.toHexString()}
-    }`
+    `${event.address.toHexString()}-${event.params.id.toHexString()}`
   )!;
   let tier = Tier.load(
     `${event.address.toHexString()}-${event.params.tier.toHexString()}`
@@ -87,8 +86,7 @@ export function handleExtend(event: Extend): void {
 
 export function handleUnsubscribe(event: Unsubscribe): void {
   let refundableSub = RefundableSub.load(
-    `${event.address.toHexString()}-${event.params.id.toHexString()}
-    }`
+    `${event.address.toHexString()}-${event.params.id.toHexString()}`
   )!;
   let tier = Tier.load(
     `${event.address.toHexString()}-${event.params.tier.toHexString()}`
@@ -131,7 +129,6 @@ export function handleAddTier(event: AddTier): void {
   tier.amountOfSubs = new BigInt(0);
   tier.disabledAt = new BigInt(0);
   tier.token = token.id;
-
 
   tier.save();
   refundableContract.save();
@@ -216,7 +213,7 @@ export function handleRemoveWhitelist(event: RemoveWhitelist): void {
     `${event.address.toHexString()}-${event.transaction.hash.toHexString()}-${event.transactionLogIndex.toHexString()}`
   );
   history.txHash = event.transaction.hash;
-  history.eventType = "AddWhitelist";
+  history.eventType = "RemoveWhitelist";
   history.refundableContract = refundableContract.id;
   history.owner = owner.id;
   history.whitelist = event.params.toRemove;
