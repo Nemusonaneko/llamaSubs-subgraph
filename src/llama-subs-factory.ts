@@ -5,7 +5,6 @@ import {
 import {
   HistoryEvent,
   NonRefundable,
-  Owner,
   Refundable,
 } from "../generated/schema";
 import {
@@ -62,3 +61,4 @@ export function handleDeployFlatRateERC20NonRefundable(
   history.createdTimestamp = event.block.timestamp;
   history.save();
 }
+
