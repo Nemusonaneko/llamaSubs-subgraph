@@ -300,15 +300,6 @@ export class Tier extends Entity {
     this.set("costPerPeriod", Value.fromBigInt(value));
   }
 
-  get amountOfSubs(): BigInt {
-    let value = this.get("amountOfSubs");
-    return value!.toBigInt();
-  }
-
-  set amountOfSubs(value: BigInt) {
-    this.set("amountOfSubs", Value.fromBigInt(value));
-  }
-
   get disabledAt(): BigInt {
     let value = this.get("disabledAt");
     return value!.toBigInt();

@@ -30,7 +30,6 @@ type Tier @entity {
   tierId: BigInt!
   refundableContract: Refundable!
   costPerPeriod: BigInt!
-  amountOfSubs: BigInt!
   disabledAt: BigInt!
   token: Token!
   refundableSubs: [RefundableSub!]! @derivedFrom(field: "tier")

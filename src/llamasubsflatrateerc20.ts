@@ -35,7 +35,6 @@ export function handleSubscribe(event: Subscribe): void {
   refundableSub.tier = tier.id;
   refundableSub.save();
 
-  tier.amountOfSubs = tier.amountOfSubs.plus(new BigInt(1));
   tier.save();
 
   let history = new HistoryEvent(
@@ -97,7 +96,6 @@ export function handleUnsubscribe(event: Unsubscribe): void {
   refundableSub.expires = event.params.expires;
   refundableSub.save();
 
-  tier.amountOfSubs = tier.amountOfSubs.minus(new BigInt(1));
   tier.save();
 
   let history = new HistoryEvent(
@@ -126,7 +124,6 @@ export function handleAddTier(event: AddTier): void {
   tier.tierId = event.params.tierNumber;
   tier.refundableContract = refundableContract.id;
   tier.costPerPeriod = event.params.costPerPeriod;
-  tier.amountOfSubs = new BigInt(0);
   tier.disabledAt = new BigInt(0);
   tier.token = token.id;
 
