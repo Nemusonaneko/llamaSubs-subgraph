@@ -99,6 +99,8 @@ type HistoryEvent @entity {
   expires: BigInt
   disabledAt: BigInt
   whitelist: Bytes
+  token: Token
+  amount: BigInt
   createdTimestamp: BigInt!
   createdBlock: BigInt!
 }

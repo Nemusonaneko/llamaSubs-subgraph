@@ -196,10 +196,7 @@ export function handleRemoveWhitelist(event: RemoveWhitelist): void {
   const oldWhitelist: Bytes[] = refundableContract.whitelist;
   const newWhitelist: Bytes[] = [];
   for (let i = 0; i < oldWhitelist.length; i++) {
-    if (
-      oldWhitelist[i].toHexString().toLowerCase() !==
-      event.params.toRemove.toHexString().toLowerCase()
-    ) {
+    if (oldWhitelist[i].notEqual(event.params.toRemove)) {
       newWhitelist.push(oldWhitelist[i]);
     }
   }
