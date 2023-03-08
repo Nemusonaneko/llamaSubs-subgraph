@@ -54,7 +54,7 @@ export function handleDeployFlatRateERC20NonRefundable(
     `${event.address.toHexString()}-${event.transaction.hash.toHexString()}-${event.transactionLogIndex.toHexString()}`
   );
   history.txHash = event.transaction.hash;
-  history.eventType = "DeployFlatRateERC20";
+  history.eventType = "DeployFlatRateERC20NonRefundable";
   history.nonRefundableContract = nonrefundable.id;
   history.owner = owner.id;
   history.createdBlock = event.block.number;

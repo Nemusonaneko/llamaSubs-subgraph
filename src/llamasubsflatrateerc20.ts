@@ -1,6 +1,7 @@
 import {
   AddTier,
   AddWhitelist,
+  Claim,
   Extend,
   RemoveTier,
   RemoveWhitelist,
@@ -214,6 +215,23 @@ export function handleRemoveWhitelist(event: RemoveWhitelist): void {
   history.refundableContract = refundableContract.id;
   history.owner = owner.id;
   history.whitelist = event.params.toRemove;
+  history.createdTimestamp = event.block.timestamp;
+  history.createdBlock = event.block.number;
+  history.save();
+}
+
+export function handleClaim(event: Claim): void {
+  let refundableContract = Refundable.load(event.address.toHexString())!;
+  const owner = Owner.load(refundableContract.owner)!;
+  let history = new HistoryEvent(
+    `${event.address.toHexString()}-${event.transaction.hash.toHexString()}-${event.transactionLogIndex.toHexString()}`
+  );
+  const token = loadToken(event.params.token);
+  history.txHash = event.transaction.hash;
+  history.eventType = "Claim";
+  history.refundableContract = refundableContract.id;
+  history.owner = owner.id;
+  history.token = token.id;
   history.createdTimestamp = event.block.timestamp;
   history.createdBlock = event.block.number;
   history.save();

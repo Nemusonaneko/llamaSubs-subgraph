@@ -6,9 +6,9 @@ dataSources:
     name: LlamaSubsFactory
     network: goerli
     source:
-      address: "0xc33C8D1FE69c15A1b7853DB335a53C946039467B"
+      address: "0x3e62FD5d648d5921C31f64A716a8c12cdc8Ce71c"
       abi: LlamaSubsFactory
-      startBlock: 8592022
+      startBlock: 8615417
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -65,7 +65,7 @@ templates:
           handler: handleExtend
         - event: Unsubscribe(uint256,uint256,uint256,uint256)
           handler: handleUnsubscribe
-        - event: Claim(address,address,uint256)
+        - event: Claim(address,address,address,uint256)
           handler: handleClaim
         - event: AddTier(uint256,address,uint224)
           handler: handleAddTier
