@@ -1,4 +1,4 @@
 /.env 
-/node_modules
-/generated
-/build
+/node_modules/
+/generated/
+/build/

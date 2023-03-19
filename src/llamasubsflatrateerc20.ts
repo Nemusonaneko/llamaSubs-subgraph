@@ -125,7 +125,7 @@ export function handleAddTier(event: AddTier): void {
   tier.tierId = event.params.tierNumber;
   tier.refundableContract = refundableContract.id;
   tier.costPerPeriod = event.params.costPerPeriod;
-  tier.disabledAt = new BigInt(0);
+  tier.disabled = false;
   tier.token = token.id;
 
   tier.save();
@@ -150,7 +150,7 @@ export function handleRemoveTier(event: RemoveTier): void {
     `${event.address.toHexString()}-${event.params.tierNumber.toHexString()}`
   )!;
   const owner = Owner.load(refundableContract.owner)!;
-  tier.disabledAt = event.params.disabledAt;
+  tier.disabled = true;
 
   tier.save();
   refundableContract.save();
@@ -163,7 +163,6 @@ export function handleRemoveTier(event: RemoveTier): void {
   history.refundableContract = refundableContract.id;
   history.owner = owner.id;
   history.tier = tier.id;
-  history.disabledAt = event.params.disabledAt;
   history.createdTimestamp = event.block.timestamp;
   history.createdBlock = event.block.number;
   history.save();

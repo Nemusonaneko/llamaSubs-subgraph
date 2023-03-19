@@ -30,7 +30,7 @@ type Tier @entity {
   tierId: BigInt!
   refundableContract: Refundable!
   costPerPeriod: BigInt!
-  disabledAt: BigInt!
+  disabled: Boolean!
   token: Token!
   refundableSubs: [RefundableSub!]! @derivedFrom(field: "tier")
   history: [HistoryEvent!]! @derivedFrom(field: "tier")
@@ -97,7 +97,6 @@ type HistoryEvent @entity {
   sub: Sub
   tier: Tier
   expires: BigInt
-  disabledAt: BigInt
   whitelist: Bytes
   token: Token
   amount: BigInt
