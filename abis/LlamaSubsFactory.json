@@ -32,22 +32,22 @@
       },
       {
         "indexed": false,
-        "internalType": "uint256",
+        "internalType": "uint128",
         "name": "currentPeriod",
-        "type": "uint256"
+        "type": "uint128"
       },
       {
         "indexed": false,
-        "internalType": "uint256",
+        "internalType": "uint128",
         "name": "periodDuration",
-        "type": "uint256"
+        "type": "uint128"
       },
       {
         "components": [
           {
-            "internalType": "uint224",
+            "internalType": "uint216",
             "name": "costPerPeriod",
-            "type": "uint224"
+            "type": "uint216"
           },
           { "internalType": "address", "name": "token", "type": "address" }
         ],
@@ -93,21 +93,21 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint128",
         "name": "_currentPeriod",
-        "type": "uint256"
+        "type": "uint128"
       },
       {
-        "internalType": "uint256",
+        "internalType": "uint128",
         "name": "_periodDuration",
-        "type": "uint256"
+        "type": "uint128"
       },
       {
         "components": [
           {
-            "internalType": "uint224",
+            "internalType": "uint216",
             "name": "costPerPeriod",
-            "type": "uint224"
+            "type": "uint216"
           },
           { "internalType": "address", "name": "token", "type": "address" }
         ],
